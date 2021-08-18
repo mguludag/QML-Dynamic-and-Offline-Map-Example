@@ -9,9 +9,13 @@ Map {
     signal gotoCenter
     signal setActiveMapType(int i)
 
-    onGotoCenter: {
-        center = marker.coordinate
-    }
+    onGotoCenter: PropertyAnimation{
+            target: map
+            property: "center"
+            to: marker.coordinate
+            duration: 1500
+            easing.type: Easing.OutBack
+        }
 
     onSetActiveMapType: {
         activeMapType= map.supportedMapTypes[i]
