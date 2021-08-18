@@ -9,13 +9,40 @@ Map {
     signal gotoCenter
     signal setActiveMapType(int i)
 
-    onGotoCenter: PropertyAnimation{
-            target: map
-            property: "center"
-            to: marker.coordinate
-            duration: 1500
-            easing.type: Easing.OutBack
-        }
+    onGotoCenter: {
+        var zoom = map.zoomLevel
+        zoominanim.to = zoom
+        zoomoutanim.start()
+    }
+
+    PropertyAnimation{
+        id: pananim
+        target: map
+        property: "center"
+        to: marker.coordinate
+        duration: 1000
+        easing.type: Easing.OutBack
+        onFinished: zoominanim.start()
+    }
+
+    PropertyAnimation{
+        id: zoomoutanim
+        target: map
+        property: "zoomLevel"
+        to: 6
+        duration: 500
+        easing.type: Easing.OutBack
+        onFinished: pananim.start()
+    }
+
+    PropertyAnimation{
+        id: zoominanim
+        target: map
+        property: "zoomLevel"
+        to: 6
+        duration: 500
+        easing.type: Easing.OutBack
+    }
 
     onSetActiveMapType: {
         activeMapType= map.supportedMapTypes[i]
